@@ -156,7 +156,7 @@ const textNodes = [
         options: [
             {
                 text: 'Restart',
-                nextText: -1
+                nextText: 1
             }
         ]
     },
@@ -166,7 +166,7 @@ const textNodes = [
         options: [
             {
                 text: 'Restart',
-                nextText: -1
+                nextText: 1
             }
         ]
     },
@@ -176,7 +176,7 @@ const textNodes = [
         options: [
             {
                 text: 'Restart',
-                nextText: -1
+                nextText: 1
             }
         ]
     },
@@ -186,10 +186,10 @@ const textNodes = [
         options: [
             {
                 text: 'Congratulations. Play Again.',
-                nextText: -1
+                nextText: 1
             }
         ]
     }
-]
+];
 
-startGame()
+startGame();

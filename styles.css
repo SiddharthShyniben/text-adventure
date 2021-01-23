@@ -1,6 +1,7 @@
-*, *::before, *::after {
+*,
+*::before,
+*::after {
     box-sizing: border-box;
-    font-family: 'Roboto', sans-serif;
 }
 
 body {
@@ -10,13 +11,13 @@ body {
     justify-content: center;
     align-items: center;
     width: 100vw;
-    min-height: 100vh;
+    height: 100vh;
     background-color: #333;
 }
 
 .container {
-    width: 50vw;
-    max-width: 50vw;
+    width: 800px;
+    max-width: 80%;
     background-color: white;
     padding: 10px;
     border-radius: 5px;
@@ -35,12 +36,18 @@ body {
     border: 1px solid hsl(200, 100%, 30%);
     border-radius: 5px;
     padding: 5px 10px;
-    margin: 20px 5px;
     color: white;
     outline: none;
 }
 
-
 .btn:hover {
     border-color: black;
+}
+
+/* Background Styles Only */
+
+@import url("https://fonts.googleapis.com/css?family=Raleway");
+
+* {
+    font-family: Raleway;
 }
