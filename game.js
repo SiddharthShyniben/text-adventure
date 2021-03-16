@@ -1,178 +1,157 @@
-const textElement = document.getElementById('text')
-const optionButtonsElement = document.getElementById('option-buttons')
+let textElement = document.getElementById('text');
+let optionButtonsElement = document.getElementById('option-buttons');
 
-let state = {}
+let state = {};
 
 function startGame() {
-    state = {}
-    showTextNode(1)
+    state = {};
+    showTextNode(1);
 }
 
 function showTextNode(textNodeIndex) {
-    const textNode = textNodes.find(textNode => textNode.id === textNodeIndex)
-    textElement.innerText = textNode.text
-    while (optionButtonsElement.firstChild) {
-        optionButtonsElement.removeChild(optionButtonsElement.firstChild)
-    }
+    let textNode = textNodes.find(node => node.id === textNodeIndex);
+    textElement.innerText = textNode.text;
+    while (optionButtonsElement.firstChild) optionButtonsElement.removeChild(optionButtonsElement.firstChild);
 
     textNode.options.forEach(option => {
         if (showOption(option)) {
-            const button = document.createElement('button')
-            button.innerText = option.text
-            button.classList.add('btn')
-            button.addEventListener('click', () => selectOption(option))
-            optionButtonsElement.appendChild(button)
+            let button = document.createElement('button');
+            button.innerText = option.text;
+            button.classList.add('btn');
+            button.addEventListener('click', () => selectOption(option));
+            optionButtonsElement.appendChild(button);
         }
-    })
+    });
 }
 
 function showOption(option) {
-    return option.requiredState == null || option.requiredState(state)
+    return option.requiredState == null || option.requiredState(state);
 }
 
 function selectOption(option) {
-    const nextTextNodeId = option.nextText
-    if (nextTextNodeId <= 0) {
-        return startGame()
-    }
-    state = Object.assign(state, option.setState)
-    showTextNode(nextTextNodeId)
+    let nextTextNodeId = option.nextText;
+    if (nextTextNodeId <= 0) return startGame();
+    state = Object.assign(state, option.setState);
+    showTextNode(nextTextNodeId);
 }
 
 const textNodes = [
     {
         id: 1,
-        text: 'You wake up in a strange place and you see a jar of blue goo near you.',
+        text: `You are a superhero who fights against The Tricksters<br><br>While attempting to steal from a Tricksters building in Buenos Aires, You learn that Martin and Sophia, Martin and Sophia, have been kidnapped by The Tricksters, who threaten to brainwash them into becoming Tricksters henchmen unless you steal some objects for them You receives a tip from your intel that Martin and Sophia are being held captive in a moving van outside the building`,
+
         options: [
             {
-                text: 'Take the goo',
-                setState: { blueGoo: true },
+                text: 'Agree',
                 nextText: 2
             },
             {
-                text: 'Leave the goo',
-                nextText: 2
+                text: 'Attempt to stop the van',
+                nextText: 3
             }
         ]
     },
     {
         id: 2,
-        text: 'You venture forth in search of answers to where you are when you come across a merchant.',
+        text: 'You venture forth in search of the van and find it But when you enter it, you find that it was a ploy Through a screen on the van, The Tricksters message you that Martin and Sophia have been brainwashed',
         options: [
             {
-                text: 'Trade the goo for a sword',
-                requiredState: (currentState) => currentState.blueGoo,
-                setState: { blueGoo: false, sword: true },
-                nextText: 3
-            },
-            {
-                text: 'Trade the goo for a shield',
-                requiredState: (currentState) => currentState.blueGoo,
-                setState: { blueGoo: false, shield: true },
-                nextText: 3
-            },
-            {
-                text: 'Ignore the merchant',
-                nextText: 3
+                text: 'Restart',
+                nextText: 1
             }
         ]
     },
     {
         id: 3,
-        text: 'After leaving the merchant you start to feel tired and stumble upon a small town next to a dangerous looking castle.',
+        text: 'For the first task, Zoom from The Tricksters tells you to steal a soldier from the Terracotta Army in Xi\'an, China While you are outside the dig site, you run into Venom, one of the Trickster henchmen who has been sent to aid you in the mission You enter an underground tunnel and fall into a booby trap You escape easily but Venom has a hard time doing so',
         options: [
             {
-                text: 'Explore the castle',
+                text: 'Help Venom',
+                setState: { venomFavour: true },
                 nextText: 4
             },
             {
-                text: 'Find a room to sleep at in the town',
+                text: 'Leave Venom',
+                nextText: 4
+            },
+        ]
+    },
+    {
+        id: 4,
+        text: 'You enter the chamber and steal a statue, which is picked up by some Tricksters along with venom who has miraculously entered the helicopter unnoticed just as two guards enter the chamber',
+        options: [
+            {
+                text: 'Hitch a ride on the helicopter',
                 nextText: 5
             },
             {
-                text: 'Find some hay in a stable to sleep in',
+                text: 'Hide among the soldiers',
                 nextText: 6
             }
         ]
     },
     {
-        id: 4,
-        text: 'You are so tired that you fall asleep while exploring the castle and are killed by some terrible monster in your sleep.',
-        options: [
-            {
-                text: 'Restart',
-                nextText: -1
-            }
-        ]
-    },
-    {
         id: 5,
-        text: 'Without any money to buy a room you break into the nearest inn and fall asleep. After a few hours of sleep the owner of the inn finds you and has the town guard lock you in a cell.',
+        text: 'Your weight causes the statue to fall and break, angering Zoom and leading to Martin and Sophia\' brainwashing',
         options: [
             {
                 text: 'Restart',
-                nextText: -1
+                nextText: 1
             }
         ]
     },
     {
         id: 6,
-        text: 'You wake up well rested and full of energy ready to explore the nearby castle.',
+        text: 'You stay unnoticed among the soldiers and manage to escape through the tunnels',
         options: [
             {
-                text: 'Explore the castle',
+                text: 'Ask for the next task',
                 nextText: 7
             }
         ]
     },
     {
         id: 7,
-        text: 'While exploring the castle you come across a horrible monster in your path.',
+        text: 'Chroma and Ego fight for your next task In the meantime, you are allowed to talk to Martin and Sophie who are in a jail cell and you snap a photo You send the photo to your intel with a request to triangulate the location of Martin and Sophia. Finally, Chroma decides to give you the task',
         options: [
             {
-                text: 'Try to run',
+                text: 'Do Chroma\'s task',
                 nextText: 8
             },
-            {
-                text: 'Attack it with your sword',
-                requiredState: (currentState) => currentState.sword,
-                nextText: 9
-            },
-            {
-                text: 'Hide behind your shield',
-                requiredState: (currentState) => currentState.shield,
-                nextText: 10
-            },
-            {
-                text: 'Throw the blue goo at it',
-                requiredState: (currentState) => currentState.blueGoo,
-                nextText: 11
-            }
         ]
     },
     {
         id: 8,
-        text: 'Your attempts to run are in vain and the monster easily catches.',
+        text: 'Chroma sends you to Monte Carlo, Monaco to make off with some expensive Beluga caviar from a charity gala At the event, where Time Bomb, a Trickster, is performing, you locate Secret Agent and friend Iris, who had been tipped off about the stolen terracotta warrior and the Trickster\'s plan to steal the eggs',
         options: [
             {
-                text: 'Restart',
-                nextText: 1
+                text: 'Trust Iris with the truth that you are stealing for The Tricksters',
+                setState: { irisFavour: true },
+                nextText: 9
+            },
+            {
+                text: 'Lock Iris on the roof while you steal',
+                nextText: 9
             }
         ]
     },
     {
         id: 9,
-        text: 'You foolishly thought this monster could be slain with a single sword.',
+        text: 'Now, you start working on the eggs You spot the tins of the eggs in the kitchen',
         options: [
             {
-                text: 'Restart',
-                nextText: 1
+                text: 'Stash the eggs and look for a way out',
+                nextText: 10
+            },
+            {
+                text: 'Grab the tins and make a run for it',
+                nextText: 11
             }
         ]
     },
     {
         id: 10,
-        text: 'The monster laughed as you hid behind your shield and ate you.',
+        text: 'You look for an opening and are interrupted by Time Bomb choking on the hors d\'oeuvres You save him with the Heimlich maneuver When you find an opening and enter the kitchen, the eggs have already been removed from their tins, leaving them with one day to expire You still manage to get away with the eggs, but Chroma declares you to have failed and Martin and Sophia are brainwashed',
         options: [
             {
                 text: 'Restart',
@@ -182,14 +161,131 @@ const textNodes = [
     },
     {
         id: 11,
-        text: 'You threw your jar of goo at the monster and it exploded. After the dust settled you saw the monster was destroyed. Seeing your victory you decide to claim this castle as your and live out the rest of your days there.',
+        text: 'You grab the cart of tins and dash out with them, successfully flying out of the gala',
         options: [
             {
-                text: 'Congratulations. Play Again.',
+                text: 'Report to The Tricksters',
+                nextText: 15
+            }
+        ]
+    },
+    {
+        id: 12,
+        text: 'Ego instructs you to travel to Hell Creek, Montana to steal a Tyrannosaurus rex bone with tissue still intact You arrive and locate the bone Once inside the museum where the bone is kept, you discovers that Secret Agents have surrounded the building',
+        options: [
+            {
+                text: 'Hide inside a model dinosaur',
+                nextText: 13
+            },
+            {
+                text: 'Make a run for the lab',
+                nextText: 14
+            }
+        ]
+    },
+    {
+        id: 13,
+        text: 'The dinosaur falls apart, forcing you to flee without the bone. As a result Martin and Sophia are brainwashed',
+        options: [
+            {
+                text: 'Restart',
+                nextText: 1
+            },
+        ]
+    },
+    {
+        id: 14,
+        text: 'You grab the bone from the lab and manage to escape through an air duct with the bone',
+        options: [
+            {
+                text: 'Report to The Tricksters',
+                nextText: 19
+            },
+        ]
+    },
+    {
+        id: 15,
+        text: "Back at The Tricksters, you check in with Martin and Sophia again and take another photo. You and your intel deduce that they are being held within the Arctic Circle. ",
+        options: [
+            {
+                text: 'Attempt a rescue mission',
+                nextText: 16
+            },
+            {
+                text: "Continue with the next task",
+                nextText: 12
+            }
+        ]
+    },
+    {
+        id: 16,
+        text: "You visit a Trickster base in the Arctic circle with suspicious activity, where you run into Venom again",
+        options: [
+            {
+                text: 'Ask Venom for help',
+                requiredState: nState => nState.venomFavour,
+                nextText: 17
+            },
+            {
+                text: "Escape Venom and continue",
+                requiredState: nState => !nState.venomFavour,
+                nextText: 18
+            }
+        ]
+    },
+    {
+        id: 17,
+        text: "Venom, thankful because you saved him from a booby trap, helps you into the base and you successfully rescue Martin and Sophia.<br><br>You could have done better by rescuing the items stolen.",
+        options: [
+            {
+                text: 'Congratulations. Play again.',
+                nextText: 1
+            }
+        ]
+    },
+    {
+        id: 18,
+        text: "You escape Venom, but you are inable to enter the base. Your intel tells you that Martin and Sophia have been spotted in a nearby city hours later. You go after them and have a small reunion. They come with you for an ice cream, but it's a trap. Martin and Sophia have already been brainwashed. They capture you and brainwash you too.",
+        options: [
+            {
+                text: 'Restart',
+                nextText: 1
+            }
+        ]
+    },
+    {
+        id: 19,
+        text: "The Tricksters arrange for you to board a ferry to the Île d'Oléron, where Martin and Sophia have been relocated in exchange for the items you stole. At the airport, you run into Iris.",
+        options: [
+            {
+                text: 'Ask Iris for help',
+                requiredState: nState => nState.irisFavour,
+                nextText: 20
+            },
+            {
+                text: "Continue on",
+                nextText: 21
+            }
+        ]
+    },
+    {
+        id: 20,
+        text: "Iris agrees to pose as you on the ferry while the real you rescues Martin and Sophia and escapes with them in a helicopter. You deliver the items you stole to Julia's doorstep so they can be returned to their rightful places.",
+        options: [
+            {
+                text: "Congratulations. You have reached the ultimate ending!. Play again.",
+                nextText: 1
+            }
+        ]
+    },
+    {
+        id: 21,
+        text: "The Tricksters capture you while on the ferry and brainwash you along with Martin and Sophia, which you surmise was their plan all along",
+        options: [
+            {
+                text: "Congratulations. You have reached the ultimate ending!. Play again.",
                 nextText: 1
             }
         ]
     }
 ];
-
-startGame();
